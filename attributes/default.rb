@@ -1,5 +1,5 @@
 # Ruby & RVM
-default['passenger-nginx']['ruby_version'] = "2.1.5"
+default['passenger-nginx']['ruby_version'] = "2.2.3"
 default['passenger-nginx']['rvm']['rvm_shell'] = '/etc/profile.d/rvm.sh'
 
 # Nginx
