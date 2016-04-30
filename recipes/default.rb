@@ -114,13 +114,33 @@ end
 directory "/opt/nginx/conf/sites-enabled" do
   mode 0755
   action :create
-  not_if { File.directory? "/opt/nginx/conf/sites-enabled" }
 end
 
 directory "/opt/nginx/conf/sites-available" do
   mode 0755
   action :create
-  not_if { File.directory? "/opt/nginx/conf/sites-available" }
+end
+
+directory "/var/www" do
+  mode 0700
+  user node['passenger-nginx']['nginx']['user']
+  group 'root'
+end
+
+directory "/var/www/.ssh" do
+  mode 0700
+  user node['passenger-nginx']['nginx']['user']
+  group 'root'
+end
+
+key_user = data_bag_item('ssh_keys', 'www-data')
+if key_user
+  key_user["keys"].each do |ssh_key|
+    ssh_authorize_key ssh_key["name"] do
+      key ssh_key['key']
+      user ssh_key['name']
+    end
+  end
 end
 
 # Set up service to run by default
