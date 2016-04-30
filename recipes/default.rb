@@ -132,7 +132,7 @@ if key_user
   key_user["keys"].each do |ssh_key|
     ssh_authorize_key ssh_key["name"] do
       key ssh_key['key']
-      user ssh_key['name']
+      user 'www-data'
     end
   end
 end
