@@ -79,6 +79,7 @@ ruby_block "something" do
         command = 'passenger-config --root'
         command_out = shell_out(command)
         node.set['passenger-nginx']['passenger-root'] = command_out.stdout
+        node.save
     end
     action :create
 end
