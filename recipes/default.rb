@@ -73,16 +73,18 @@ bash "Installing passenger nginx module and nginx from source" do
   not_if { File.exists? "/opt/nginx/sbin/nginx" }
 end
 
+passenger_root = nil
+
 ruby_block "store passenger root" do
-    block do
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-        command = 'passenger-config --root'
-        command_out = shell_out(command)
-        node['passenger-nginx']['passenger-root'] = command_out.stdout
-        node.set['passenger-nginx']['passenger-root'] = command_out.stdout
-        node.save
-    end
-    action :create
+  block do
+    Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
+    command = 'passenger-config --root'
+    command_out = shell_out(command)
+    node.default['passenger-nginx']['passenger-root'] = passenger_root = command_out.stdout
+    node.set['passenger-nginx']['passenger-root'] = passenger_root
+    node.save
+  end
+  action :create
 end
 
 template "/opt/nginx/conf/nginx.conf" do
