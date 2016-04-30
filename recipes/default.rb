@@ -33,12 +33,6 @@ end
   apt_package pkg
 end
 
-execute "Installing GPG keys so that RVM won't barf on installation" do
-  command "gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"
-  user "root"
-  not_if { File.exists? "/usr/local/rvm/bin/rvm" }
-end
-
 # Check for if we are installing Passenger Enterprise
 passenger_enterprise = !!node['passenger-nginx']['passenger']['enterprise_download_token']
 
