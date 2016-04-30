@@ -176,6 +176,8 @@ node['passenger-nginx']['apps'].each do |app|
       client_max_body_size: app['client_max_body_size'] || nil,
       client_body_buffer_size: app['client_body_buffer_size'] || nil
     )
+
+    only_if { File.directory? app['root'] }
   end
 
   # Symlink the conf
@@ -194,12 +196,6 @@ node['passenger-nginx']['apps'].each do |app|
   #    not_if { File.directory? "/usr/local/rvm/gems/ruby-#{node['passenger-nginx']['ruby_version']}@#{app['ruby_gemset']}" }
   #  end
   #end
-end
-
-# Restart/start nginx
-service "nginx" do
-  action :restart
-  only_if { File.exists? "/opt/nginx/logs/nginx.pid" }
 end
 
 service "nginx" do
