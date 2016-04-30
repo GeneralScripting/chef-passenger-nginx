@@ -25,4 +25,5 @@ default['passenger-nginx']['passenger']['enterprise_download_token'] = nil
 default['passenger-nginx']['passenger']['pre_start'] = []
 
 # Applications
+default['passenger-nginx']['deploy_user'] = 'deploy'
 default['passenger-nginx']['apps'] = []

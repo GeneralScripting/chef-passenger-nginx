@@ -117,25 +117,25 @@ end
 
 directory "/var/www" do
   mode 0700
-  user node['passenger-nginx']['nginx']['user']
-  group 'root'
+  user node['passenger-nginx']['deploy_user']
+  group 'www-data'
 end
 
-directory "/var/www/.ssh" do
-  mode 0700
-  user node['passenger-nginx']['nginx']['user']
-  group 'root'
-end
+#directory "/var/www/.ssh" do
+#  mode 0700
+#  user node['passenger-nginx']['nginx']['user']
+#  group 'root'
+#end
 
-key_user = data_bag_item('ssh_keys', 'www-data')
-if key_user
-  key_user["keys"].each do |ssh_key|
-    ssh_authorize_key ssh_key["name"] do
-      key ssh_key['key']
-      user 'www-data'
-    end
-  end
-end
+#key_user = data_bag_item('ssh_keys', 'www-data')
+#if key_user
+#  key_user["keys"].each do |ssh_key|
+#    ssh_authorize_key ssh_key["name"] do
+#      key ssh_key['key']
+#      user 'www-data'
+#    end
+#  end
+#end
 
 # Set up service to run by default
 service 'nginx' do
