@@ -73,23 +73,22 @@ bash "Installing passenger nginx module and nginx from source" do
   not_if { File.exists? "/opt/nginx/sbin/nginx" }
 end
 
-Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)      
-command = 'passenger-config --root'
-command_out = shell_out(command)
-passenger_root = command_out.stdout
-# Create the config
-#if passenger_enterprise
-#  passenger_root = "/usr/local/rvm/gems/ruby-#{node['passenger-nginx']['ruby_version']}/gems/passenger-enterprise-server-#{node['passenger-nginx']['passenger']['version']}"
-#else
-#  passenger_root = "/usr/local/rvm/gems/ruby-#{node['passenger-nginx']['ruby_version']}/gems/passenger-#{node['passenger-nginx']['passenger']['version']}"
-#end
+ruby_block "something" do
+    block do
+        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
+        command = 'passenger-config --root'
+        command_out = shell_out(command)
+        node.set['passenger-nginx']['passenger-root'] = command_out.stdout
+    end
+    action :create
+end
 
 template "/opt/nginx/conf/nginx.conf" do
   source "nginx.conf.erb"
   variables({
     :ruby_version => node['passenger-nginx']['ruby_version'],
     :rvm => node['rvm'],
-    :passenger_root => passenger_root,
+    :passenger_root => node['passenger-nginx']['passenger-root'],
     :passenger => node['passenger-nginx']['passenger'],
     :nginx => node['passenger-nginx']['nginx']
   })
