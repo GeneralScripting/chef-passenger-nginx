@@ -73,11 +73,12 @@ bash "Installing passenger nginx module and nginx from source" do
   not_if { File.exists? "/opt/nginx/sbin/nginx" }
 end
 
-ruby_block "something" do
+ruby_block "store passenger root" do
     block do
         Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
         command = 'passenger-config --root'
         command_out = shell_out(command)
+        node['passenger-nginx']['passenger-root'] = command_out.stdout
         node.set['passenger-nginx']['passenger-root'] = command_out.stdout
         node.save
     end
