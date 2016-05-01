@@ -117,7 +117,7 @@ directory "/opt/nginx/conf/sites-available" do
 end
 
 directory "/var/www" do
-  mode 0700
+  mode 0755
   user node['passenger-nginx']['deploy_user']
   group 'www-data'
 end
