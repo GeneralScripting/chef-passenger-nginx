@@ -87,6 +87,7 @@ template "/opt/nginx/conf/nginx.conf" do
     :ruby_version => node['passenger-nginx']['ruby_version'],
     :rvm => node['rvm'],
     :passenger_root => node['passenger-nginx']['passenger-root'],
+    :passenger_ruby => node[:languages][:ruby][:ruby_bin],
     :passenger => node['passenger-nginx']['passenger'],
     :nginx => node['passenger-nginx']['nginx']
   })
