@@ -192,6 +192,8 @@ node['passenger-nginx']['apps'].each do |app|
       client_body_buffer_size: app['client_body_buffer_size'] || nil
     )
 
+    notifies :restart, resources(:service => "nginx"), :delayed
+
     only_if { File.directory? app['root'] }
   end
 
